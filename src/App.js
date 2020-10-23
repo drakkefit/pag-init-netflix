@@ -12,12 +12,12 @@ export default () => {
   const [featuredData, setFeaturedData] = useState(null);
   const [blackHeader, setBlackHeader] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     const loadAll = async () => {
       let list = await tmdb.getHomeList();
       setMovieList(list);
 
-      let originals = list.filter(i=>i.slug === 'originals');
+      let originals = list.filter(i => i.slug === 'originals');
       let randomChosen = Math.floor(Math.random() * (originals[0].items.results.length - 1));
       let chosen = originals[0].items.results[randomChosen];
       let chosenInfo = await Tmdb.getMovieInfo(chosen.id, 'tv');
@@ -29,11 +29,11 @@ export default () => {
 
   useEffect(() => {
     const scrollListener = () => {
-        if(window.scrollY > 10) {
-          setBlackHeader(true);
-        } else {
-          setBlackHeader(false);
-        }
+      if (window.scrollY > 10) {
+        setBlackHeader(true);
+      } else {
+        setBlackHeader(false);
+      }
     }
 
     window.addEventListener('scroll', scrollListener);
@@ -50,20 +50,25 @@ export default () => {
 
       {featuredData &&
         <FeaturedMovies item={featuredData} />
-      
+
       }
-      
+
       <section className="lists">
-        {movieList.map((item, key)=>(
-            <MovieRow key={key} title={item.title} items={item.items}/>
+        {movieList.map((item, key) => (
+          <MovieRow key={key} title={item.title} items={item.items} />
         ))}
       </section>
 
       <footer>
-        Feito com <span role="img" aria-label="coração">🧡</span> por <a href="https://github.com/drakkefit">Adriano Barbosa</a> <br/>
-        Direitos de imagem para NETFLIX<br/>
+        Feito com <span role="img" aria-label="coração">🧡</span> por <a href="https://github.com/drakkefit">Adriano Barbosa</a> <br />
+        Direitos de imagem para NETFLIX<br />
         Dados pegos do site Themoviedb.org
       </footer>
+      {movieList.length <= 0 &&
+        <div className="loading">
+          <img src="https://www.filmelier.com/pt/br/news/wp-content/uploads/2020/03/netflix-loading.gif" alt="carregando" />
+        </div>
+      }
     </div>
   );
 }
